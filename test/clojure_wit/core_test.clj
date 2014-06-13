@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [clojure-wit.core :refer :all]))
 
-(deftest a-test
-  (testing "Nothing is truly nothing."
-    (is (= 0 0))))
+(deftest get-hi
+  (testing "Wit should say hi back."
+    (is (= true
+           (.contains (clojure-wit.core/say-hi (System/getenv "WIT_ACCESS_TOKEN")) "hello")))))
