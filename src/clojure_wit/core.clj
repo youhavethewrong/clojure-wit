@@ -4,6 +4,11 @@
 
 (def wit-url "https://api.wit.ai")
 
+(defn jsonify
+  "Convert a string to JSON."
+  [json]
+  (json/read-str json :key-fn keyword))
+
 (defn wit-api
   "Make HTTP calls against the wit.ai HTTP API."
   [token method path body]
@@ -14,11 +19,12 @@
               (str "Bearer " token)}
     :body body}))
 
-(defn say-hi
-  "Just says hi to wit.ai."
+(defn get-intents
+  "Get the current intents registered with Wit."
   [token]
-  (let [response (json/read-str
-              (:body
-               (wit-api token :get "/message?q=hello" ""))
-              :key-fn keyword)]
-    ((((response :outcome) :entities) :search_query) :value ))) 
+  (:body ( wit-api token :get "/intents" nil))) 
+
+(defn get-entities
+  "Get the current entities registered with Wit."
+  [token]
+  (:body ( wit-api token :get "/entities" nil))) 
